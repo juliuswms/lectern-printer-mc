@@ -1,2 +1,2 @@
-# map-printer-mc
+# lectern-printer-mc
  

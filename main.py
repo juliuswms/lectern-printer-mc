@@ -1,25 +1,36 @@
-import pygetwindow as gw
-import time
-import keymanager
+import key_manager as km
+import schematic_handler as sh
+import block_stream_manager as bsm
+from time import sleep
 
-# Placeholder block list (you can replace this with the actual block data later)
-# Each tuple represents (block_name, page_number, count)
-block_list = [
-    ("red", 2, 3),  # 3 red blocks from page 2
-    ("blue", 5, 1),  # 1 blue block from page 5
-    ("white", 10, 1),  # 1 white block from page 10
-    ("black", 3, 5)   # 59999999999 black blocks from page 3
-]
+# white = 1
+# light gray = 2
+# dark gray = 3
+# black = 4
+# brown = 5
+# red = 6
+# orange = 7
+# yellow = 8
+# light green = 9
+# green = 10
+# cyan = 11
+# light blue = 12
+# blue = 13
+# purple = 14
+# pink = 15
 
 if __name__ == "__main__":
-    time.sleep(3)
-    key_mgr = keymanager.key_manager(is_homed=False, last_page=1)
-    key_mgr.goto_page(15)
-    time.sleep(1)
-    key_mgr.goto_page(1)
-    time.sleep(1)
-    key_mgr.trigger()
-    time.sleep(1)
-    key_mgr.goto_page(2)
-    time.sleep(1)
+    keyboard_manager = km.keymanager()
+    schematic = sh.schematic_handler("test.litematic")
+    block_stream_manager = bsm.block_stream_manager(schematic.blocklist, False)
+    print(f"Width: {schematic.width}, Height: {schematic.height}, Length: {schematic.length}")
 
+    print(f"Goto index: {block_stream_manager.get_lectern_index_at_index(0)}")
+    input("Press Enter to start printing...")
+    keyboard_manager.is_homed = True
+    keyboard_manager.last_page = block_stream_manager.get_lectern_index_at_index(0)
+    sleep(2)
+    for block in block_stream_manager.block_stream:
+        print(f"Printing: {block.block_name} with Lectern-Index {block.lectern_index}")
+        keyboard_manager.goto_page(block.lectern_index)
+        sleep(0.5)
