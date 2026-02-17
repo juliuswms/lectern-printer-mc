@@ -19,9 +19,11 @@ from time import sleep
 # purple = 14
 # pink = 15
 
+SCHEMATIC_PATH = "./schematics/test-prints/Printer Test 2 (16x16).litematic"
+
 if __name__ == "__main__":
     keyboard_manager = km.keymanager()
-    schematic = sh.schematic_handler("test.litematic")
+    schematic = sh.schematic_handler(SCHEMATIC_PATH)
     block_stream_manager = bsm.block_stream_manager(schematic.blocklist, False)
     print(f"Width: {schematic.width}, Height: {schematic.height}, Length: {schematic.length}")
 
