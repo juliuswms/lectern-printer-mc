@@ -19,7 +19,7 @@ from time import sleep
 # purple = 14
 # pink = 15
 
-SCHEMATIC_PATH = "./schematics/test-prints/Printer Test 2 (16x16).litematic"
+SCHEMATIC_PATH = "./schematics/test-prints/Printer Test 3 (32x32).litematic"
 
 if __name__ == "__main__":
     keyboard_manager = km.keymanager()
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     block_stream_manager = bsm.block_stream_manager(schematic.blocklist, False)
     print(f"Width: {schematic.width}, Height: {schematic.height}, Length: {schematic.length}")
 
-    print(f"Goto index: {block_stream_manager.get_lectern_index_at_index(0)}")
+    print(f"Goto index: {block_stream_manager.get_lectern_index_at_index(0)} for block: {block_stream_manager.get_block_at_index(0).block_name}")
     input("Press Enter to start printing...")
     keyboard_manager.is_homed = True
     keyboard_manager.last_page = block_stream_manager.get_lectern_index_at_index(0)
@@ -36,4 +36,4 @@ if __name__ == "__main__":
     for block in block_stream_manager.block_stream:
         print(f"Printing: {block.block_name} with Lectern-Index {block.lectern_index}")
         keyboard_manager.goto_page(block.lectern_index)
-        sleep(0.5)
+        sleep(0.35)

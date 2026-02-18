@@ -43,3 +43,9 @@ class block_stream_manager:
         else:
             print("Error getting lectern index at index")
             return None
+        
+    def remove_block_at_index(self, index):
+        if index < len(self.block_stream):
+            self.block_stream.pop(index)
+        else:
+            print("Error removing block at index")

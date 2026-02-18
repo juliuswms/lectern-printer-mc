@@ -1,6 +1,8 @@
 from pynput.keyboard import Key, Controller
 import time
 
+INPUT_DELAY = 0.005
+
 class keymanager:
     def __init__(self):
         self.is_homed = False
@@ -29,13 +31,13 @@ class keymanager:
     
     def trigger(self):
         self.keyboard.tap(Key.page_down)
-        time.sleep(0.1)
+        time.sleep(INPUT_DELAY)
         self.keyboard.tap(Key.page_up)
 
     def move(self, key, count):
         for _ in range(count):
             start_time = time.time() * 1000
             self.keyboard.tap(key)
-            time.sleep(0.1)
+            time.sleep(INPUT_DELAY)
             if self.logging:
                 print(f"Pressing {key} took {time.time() * 1000 - start_time} ms")
