@@ -16,7 +16,7 @@ class schematic_handler:
 
         for x in range(abs(self.width)):
             for z in range(abs(self.height)):
-                for y in range(abs(self.length)):
+                for y in range(abs(self.length) - 1, -1, -1):
                     x_region = (self.width / abs(self.width)) * x
                     z_region = (self.height / abs(self.height)) * z
                     y_region = (self.length / abs(self.length)) * y
