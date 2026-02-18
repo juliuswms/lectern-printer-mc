@@ -32,6 +32,7 @@ if __name__ == "__main__":
     keyboard_manager.is_homed = True
     keyboard_manager.last_page = block_stream_manager.get_lectern_index_at_index(0)
     sleep(2)
+    block_stream_manager.remove_block_at_index(0)
     for block in block_stream_manager.block_stream:
         print(f"Printing: {block.block_name} with Lectern-Index {block.lectern_index}")
         keyboard_manager.goto_page(block.lectern_index)
