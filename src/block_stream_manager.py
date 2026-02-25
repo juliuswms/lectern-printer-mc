@@ -7,19 +7,10 @@ class block_stream_manager:
 
     def _get_palette(self, raw_block_stream, self_assigned):
         raw_palette = list(set(raw_block_stream))
-        palette = []
+        if(len(raw_palette) > (self.MAX_MAG_SIZE * self.MAG_COUNT)): raise Exception(f"More block types then slots available ({self.MAX_MAG_SIZE * self.MAG_COUNT})")
+        change_matrix = self._get_change_matrix(raw_block_stream, raw_palette)        
 
-        if len(raw_palette) > 15:
-            print("Error: More than 15 unique blocks in the schematic. Please reduce the number of unique blocks to 15 or less.")
-            exit(1)
 
-        if not self_assigned:
-            for i in range(len(raw_palette)):
-                block = raw_palette[i]
-                palette.append(block_mapping.block_mapping(block, i + 1))
-            return palette
-        else:
-            pass # TODO: Way to assign blocks to lectern indices manually
 
     def _get_block_stream(self, raw_block_stream):
         block_stream = []
@@ -49,3 +40,25 @@ class block_stream_manager:
             self.block_stream.pop(index)
         else:
             print("Error removing block at index")
+
+    def _get_change_matrix(raw_block_stream, raw_palette):
+        last_block = raw_block_stream[0]
+    
+        block_type_index_dict = {t: i for i, t in enumerate(raw_palette)}
+    
+        n = len(raw_palette)
+    
+        change_matrix = [[0 for _ in range(n)] for _ in range(n)]
+    
+        for i in range(1, len(raw_block_stream)):
+            curr = raw_block_stream[i]
+            if last_block == curr:
+                continue
+            
+            prev_idx = block_type_index_dict[last_block]
+            curr_idx = block_type_index_dict[curr]
+            change_matrix[prev_idx][curr_idx] += 1
+    
+            last_block = curr
+    
+        return change_matrix
