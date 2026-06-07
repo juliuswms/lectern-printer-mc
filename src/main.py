@@ -1,7 +1,8 @@
+from time import sleep
+
+import block_stream_manager as bsm
 import key_manager as km
 import schematic_handler as sh
-import block_stream_manager as bsm
-from time import sleep
 
 # white = 1
 # light gray = 2
@@ -19,16 +20,22 @@ from time import sleep
 # purple = 14
 # pink = 15
 
-SCHEMATIC_PATH = "./schematics/test-prints/Printer Test 3 (32x32).litematic"
+SCHEMATIC_PATH = "./schematics/test-prints/saulgoodman3d.litematic"
 
 if __name__ == "__main__":
-    keyboard_manager = km.keymanager()
-    schematic = sh.schematic_handler(SCHEMATIC_PATH)
-    block_stream_manager = bsm.block_stream_manager(schematic.blocklist, False)
-    print(f"Width: {schematic.width}, Height: {schematic.height}, Length: {schematic.length}")
+    keyboard_manager = km.KeyManager()
+    schematic = sh.SchematicHandler(SCHEMATIC_PATH)
+    block_stream_manager = bsm.BlockStreamManager(schematic.blocklist, False)
+    print(
+        f"Width: {schematic.width}, Height: {schematic.height}, Length: {schematic.length}"
+    )
 
-    print(f"Goto index: {block_stream_manager.get_lectern_index_at_index(0)} for block: {block_stream_manager.get_block_at_index(0).block_name}")
+    print(
+        f"Goto index: {block_stream_manager.get_lectern_index_at_index(0)} for block: {block_stream_manager.get_block_at_index(0).block_name}"
+    )
     input("Press Enter to start printing...")
+    for block in block_stream_manager.block_stream:
+        print(block)
     keyboard_manager.is_homed = True
     keyboard_manager.last_page = block_stream_manager.get_lectern_index_at_index(0)
     sleep(2)

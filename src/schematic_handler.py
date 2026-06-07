@@ -1,6 +1,7 @@
 import litemapy
 
-class schematic_handler:
+
+class SchematicHandler:
     def __init__(self, path):
         self.pattern_region = self.load_region(path)
         self.width = self.pattern_region.width
@@ -20,11 +21,17 @@ class schematic_handler:
                     x_region = (self.width / abs(self.width)) * x
                     z_region = (self.height / abs(self.height)) * z
                     y_region = (self.length / abs(self.length)) * y
-                    blocklist.append(self.pattern_region.getblock(int(x_region), int(z_region), int(y_region)).blockid)
+                    blocklist.append(
+                        self.pattern_region.getblock(
+                            int(x_region), int(z_region), int(y_region)
+                        ).blockid
+                    )
         return blocklist
 
     def get_blocks_for_row(self, row_index):
         blocks = []
         for y in range(self.pattern_region.length):
-            blocks.append(self.pattern_region.getblock(row_index, 0, y).blockid) # TODO: Check for air block
+            blocks.append(
+                self.pattern_region.getblock(row_index, 0, y).blockid
+            )  # TODO: Check for air block
         return blocks
