@@ -13,12 +13,9 @@ class InstructionManager:
             if block.mag_index != current_mag:
                 for _ in range((block.mag_index - current_mag) % mag_count):
                     instructions.append(self.MAG_CHANGE_POS)
-                    instructions.append(self.HOME_POS)
-                    current_mag = block.mag_index
-            instructions.append(block.lectern_index)
-            instructions.append(self.HOME_POS)
+                current_mag = block.mag_index
+            instructions.append(block.lectern_index + 2)
 
-        # self.print_instructions(instructions)
         return instructions
 
     def print_instructions(self, instructions):
