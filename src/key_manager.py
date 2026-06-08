@@ -1,18 +1,25 @@
+import json
 import math
+import os
 import time
 
-INPUT_DELAY = 0.001
+from pynput.keyboard import Controller, Key
 
 
 class KeyManager:
-    def __init__(self):
-        from pynput.keyboard import Controller, Key
+    INPUT_DELAY = 0.001
+    CHAR_MAPPING_FILEPATH = os.path.join(
+        os.path.dirname(__file__), "..", "char-mapping.json"
+    )
 
+    def __init__(self):
         self.is_homed = False
         self.last_page = 0
         self.logging = False
         self.keyboard = Controller()
         self.Key = Key
+        with open(self.CHAR_MAPPING_FILEPATH) as f:
+            self._mapping = json.load(f)
 
     def home(self):
         self.move(self.Key.page_up, 15)
@@ -48,7 +55,7 @@ class KeyManager:
             if self.logging:
                 print(f"Pressing {key} took {time.time() * 1000 - start_time} ms")
 
-    def type_intructions(self, instructions, max_page_chars=266):
+    def type_intructions(self, instructions, max_page_chars=1023):
         self.keyboard.type("name=test")
         self.keyboard.tap(self.Key.enter)
         self.keyboard.type("est=100")
@@ -59,29 +66,17 @@ class KeyManager:
         self.keyboard.tap(self.Key.page_down)
 
         num_pages = math.ceil(len(instructions) / max_page_chars)
+        time.sleep(0.2)
         for i in range(num_pages):
             page_string = ""
             start = i * max_page_chars
             end = min(start + max_page_chars, len(instructions))
             for idx in range(start, end):
-                page_string += self._int_to_hex(instructions[idx])
+                page_string += self._int_to_char(instructions[idx])
             self.keyboard.type(page_string)
+            time.sleep(0.2)
             self.keyboard.tap(self.Key.page_down)
+            time.sleep(0.05)
 
-    def _int_to_hex(self, num):
-        if num >= 0 and num <= 9:
-            return f"{num}"
-        if num == 10:
-            return "A"
-        if num == 11:
-            return "B"
-        if num == 12:
-            return "C"
-        if num == 13:
-            return "D"
-        if num == 14:
-            return "E"
-        if num == 15:
-            return "F"
-
-        return "X"
+    def _int_to_char(self, num):
+        return self._mapping[num]
