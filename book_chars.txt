@@ -1,0 +1,19 @@
+Chars that are able to fit 1023 times on one page of a book
+"︳" U+FE33
+"︱" U+FE31
+"⁞" U+205E
+"⏐" U+23D0
+"┆" U+2506
+"┊" U+250A
+"︲" U+FE32
+"╎" U+254E
+"╵" U+2575
+"╷" U+2577
+"⦙" U+2999
+"⸽" U+2E3D
+"㆐" U+3190
+"꠰" U+A830
+"𝍩" U+1D369 broken?
+"𝍷" U+1D377 broken?
+"୲" U+0B72
+"౹" U+0C79
