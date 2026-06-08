@@ -22,7 +22,7 @@ class BlockStreamManager:
 
     # TODO: add functunalety for non self_assined block streams
     def _get_palette(self, raw_block_stream, self_assigned):
-        raw_palette = list(set(raw_block_stream))
+        raw_palette = list(dict.fromkeys(raw_block_stream))
         if len(raw_palette) > (self.MAX_MAG_SIZE * self.MAG_COUNT):
             raise Exception(
                 f"More block types then slots available ({self.MAX_MAG_SIZE * self.MAG_COUNT})"
@@ -152,6 +152,7 @@ class BlockStreamManager:
     def _optimize_block_assignment(
         self, block_assignment, change_matrix, raw_palette, max_iterations=50000
     ):
+        random.seed(42)
         current_assignemt = block_assignment
         current_cost = self._get_assignment_cost(
             change_matrix, block_assignment, raw_palette
