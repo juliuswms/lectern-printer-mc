@@ -160,12 +160,13 @@ class BlockStreamManager:
         best_assignment = current_assignemt
         best_cost = current_cost
 
-        T = 100.0
+        T_start = current_cost * 0.2
         T_min = 0.0001
         alpha = 0.9999
 
         iteration = 0
-        while T > T_min and iteration < max_iterations:
+        while T_start > T_min and iteration < max_iterations:
+            T = T_start * (alpha**iteration)
             candidat = self._random_swap_in_block_assignment(current_assignemt)
             candidat_cost = self._get_assignment_cost(
                 change_matrix, candidat, raw_palette
@@ -180,7 +181,6 @@ class BlockStreamManager:
                     best_cost = current_cost
                     print(f"Best cost: {best_cost} at {iteration}")
 
-            T *= alpha
             iteration += 1
 
         return best_assignment
