@@ -21,7 +21,8 @@ if __name__ == "__main__":
         block_stream_manager.block_palette,
         block_stream_manager.MAG_COUNT,
     )
-    print(len(instructions))
-    print(len(schematic.blocklist))
+    print(f"{len(instructions)} instructions")
+    print(f"{len(schematic.blocklist)} blocks to print")
+    print(f"{len(instructions) - len(schematic.blocklist)} mag changes")
     sleep(3)
     key_manager.type_intructions(instructions)
