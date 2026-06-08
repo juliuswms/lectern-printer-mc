@@ -114,8 +114,8 @@ class BlockStreamManager:
                     continue
                 i_mag_pos = block_assignment_dict[block_types[i]].mag_index
                 j_mag_pos = block_assignment_dict[block_types[j]].mag_index
-                cost += (j_mag_pos - i_mag_pos) % self.MAG_COUNT
-
+                steps = (j_mag_pos - i_mag_pos) % self.MAG_COUNT
+                cost += change_matrix[i][j] * steps
         return cost
 
     def _get_total_type_changes(self, change_matrix, block_types):
