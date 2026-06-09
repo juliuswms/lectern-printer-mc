@@ -44,14 +44,14 @@ class KeyManager:
 
     def trigger(self):
         self.keyboard.tap(self.Key.page_down)
-        time.sleep(INPUT_DELAY)
+        time.sleep(self.INPUT_DELAY)
         self.keyboard.tap(self.Key.page_up)
 
     def move(self, key, count):
         for _ in range(count):
             start_time = time.time() * 1000
             self.keyboard.tap(key)
-            time.sleep(INPUT_DELAY)
+            time.sleep(self.INPUT_DELAY)
             if self.logging:
                 print(f"Pressing {key} took {time.time() * 1000 - start_time} ms")
 
