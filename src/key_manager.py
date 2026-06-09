@@ -55,14 +55,23 @@ class KeyManager:
             if self.logging:
                 print(f"Pressing {key} took {time.time() * 1000 - start_time} ms")
 
-    def type_intructions(self, instructions, max_page_chars=1023):
-        self.keyboard.type("name=test")
+    def type_intructions(
+        self,
+        print_name,
+        print_est,
+        print_delays,
+        print_pause_delay,
+        instructions,
+        max_page_chars=1023,
+    ):
+        self.keyboard.type(f"name={print_name}")
         self.keyboard.tap(self.Key.enter)
-        self.keyboard.type("est=100")
+        self.keyboard.type(f"est={print_est}")
         self.keyboard.tap(self.Key.enter)
-        self.keyboard.type("delays=10,10")
+        self.keyboard.type(f"delays={print_delays}")
         self.keyboard.tap(self.Key.enter)
-        self.keyboard.type("pdelay=2")
+        self.keyboard.type(f"pdelay={print_pause_delay}")
+        self.keyboard.tap(self.Key.enter)
         self.keyboard.tap(self.Key.page_down)
 
         num_pages = math.ceil(len(instructions) / max_page_chars)
