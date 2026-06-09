@@ -62,6 +62,7 @@ class KeyManager:
         print_delays,
         print_pause_delay,
         instructions,
+        book=0,
         max_page_chars=1023,
     ):
         self.keyboard.type(f"name={print_name}")
@@ -72,13 +73,19 @@ class KeyManager:
         self.keyboard.tap(self.Key.enter)
         self.keyboard.type(f"pdelay={print_pause_delay}")
         self.keyboard.tap(self.Key.enter)
+        self.keyboard.type(f"book={book}")
         self.keyboard.tap(self.Key.page_down)
 
         num_pages = math.ceil(len(instructions) / max_page_chars)
+        if book > num_pages / 100:
+            raise Exception(
+                f"Book requested is out of range. Book: {book} was requested but {num_pages / 100} are needed."
+            )
         time.sleep(0.2)
-        for i in range(num_pages):
+        start_page = (book + 1) * 100
+        for start_page in range(num_pages):
             page_string = ""
-            start = i * max_page_chars
+            start = start_page * max_page_chars
             end = min(start + max_page_chars, len(instructions))
             for idx in range(start, end):
                 page_string += self._int_to_char(instructions[idx])
