@@ -25,7 +25,7 @@ class BlockStreamManager:
         raw_palette = list(dict.fromkeys(raw_block_stream))
         if len(raw_palette) > (self.MAX_MAG_SIZE * self.MAG_COUNT):
             raise Exception(
-                f"More block types then slots available ({self.MAX_MAG_SIZE * self.MAG_COUNT})"
+                f"More block types then slots available (Available: {self.MAX_MAG_SIZE * self.MAG_COUNT}, Needed: {len(raw_palette)})"
             )
         return raw_palette
 
