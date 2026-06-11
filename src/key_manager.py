@@ -1,8 +1,13 @@
 import json
 import math
 import os
+import subprocess
 import time
 
+import evdev
+from evdev import UInput
+from evdev import ecodes as e
+from pynput import keyboard
 from pynput.keyboard import Controller, Key
 
 
@@ -65,23 +70,18 @@ class KeyManager:
         book=0,
         max_page_chars=1023,
     ):
-        self.keyboard.type(f"name={print_name}")
-        self.keyboard.tap(self.Key.enter)
-        self.keyboard.type(f"est={print_est}")
-        self.keyboard.tap(self.Key.enter)
-        self.keyboard.type(f"delays={print_delays}")
-        self.keyboard.tap(self.Key.enter)
-        self.keyboard.type(f"pdelay={print_pause_delay}")
-        self.keyboard.tap(self.Key.enter)
-        self.keyboard.type(f"book={book}")
-        self.keyboard.tap(self.Key.page_down)
+        self._paste_string(
+            f"name={print_name}\nest={print_est}\ndelays={print_delays}\npdelay={print_pause_delay}\nbook={book}"
+        )
 
+        time.sleep(0.1)
         num_pages = math.ceil(len(instructions) / max_page_chars)
         if book > num_pages / 100:
             raise Exception(
                 f"Book requested is out of range. Book: {book} was requested but {num_pages / 100} are needed."
             )
-        time.sleep(0.2)
+        self._press_key(e.KEY_PAGEDOWN)
+        time.sleep(2)
         start_page = (book + 1) * 100
         for start_page in range(num_pages):
             page_string = ""
@@ -89,10 +89,22 @@ class KeyManager:
             end = min(start + max_page_chars, len(instructions))
             for idx in range(start, end):
                 page_string += self._int_to_char(instructions[idx])
-            self.keyboard.type(page_string)
-            time.sleep(0.2)
-            self.keyboard.tap(self.Key.page_down)
+            self._paste_string(page_string)
+            print(page_string)
+            time.sleep(0.05)
+            self._press_key(e.KEY_PAGEDOWN)
             time.sleep(0.05)
 
     def _int_to_char(self, num):
         return self._mapping[num]
+
+    def _paste_string(self, text):
+        subprocess.run(["wl-copy"], input=text.encode("utf-8"))
+        subprocess.run(["ydotool", "key", "29:1", "47:1", "47:0", "29:0"])  # Ctrl+V
+
+    def _press_key(self, key):
+        ui = UInput()
+        ui.write(e.EV_KEY, key, 1)
+        ui.write(e.EV_KEY, key, 0)
+        ui.syn()
+        ui.close()
