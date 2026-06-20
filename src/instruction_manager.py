@@ -1,6 +1,6 @@
 class InstructionManager:
-    HOME_POS = 0
-    MAG_CHANGE_POS = 1
+    HOME_POS = 1
+    MAG_CHANGE_POS = 0
 
     def __init__(self) -> None:
         pass
