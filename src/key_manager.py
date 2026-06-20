@@ -80,7 +80,8 @@ class KeyManager:
             raise Exception(
                 f"Book requested is out of range. Book: {book} was requested but {num_pages / 100} are needed."
             )
-        self._press_key(e.KEY_PAGEDOWN)
+        # self._press_key(e.KEY_PAGEDOWN)
+        subprocess.run(["ydotool", "key", "109:1", "109:0"])
         time.sleep(2)
         start_page = (book + 1) * 100
         for start_page in range(num_pages):
@@ -90,10 +91,9 @@ class KeyManager:
             for idx in range(start, end):
                 page_string += self._int_to_char(instructions[idx])
             self._paste_string(page_string)
-            print(page_string)
-            time.sleep(0.05)
-            self._press_key(e.KEY_PAGEDOWN)
-            time.sleep(0.05)
+            time.sleep(0.09)
+            subprocess.run(["ydotool", "key", "109:1", "109:0"])
+            time.sleep(0.09)
 
     def _int_to_char(self, num):
         return self._mapping[num]
