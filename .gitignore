@@ -3,3 +3,5 @@ __pycache__
 .vscode
 .zed
 .pytest_cache
+/schematics/test-prints
+/schematics/output*
