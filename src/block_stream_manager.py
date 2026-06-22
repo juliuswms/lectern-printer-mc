@@ -6,11 +6,14 @@ import block_mapping
 
 class BlockStreamManager:
     MAX_MAG_SIZE = 14  # 0 based index
-    MAG_COUNT = 4  # 1 based index
 
     # raw_block_stream is the blocks that will be placed on after eatch other
     # self_assigned_palette determens if the block palette is already set or if it should minimize the mag
-    def __init__(self, raw_block_stream, self_assigned_palette):
+    def __init__(
+        self, raw_block_stream, seed, self_assigned_palette=False, mag_count=4
+    ):
+        self.MAG_COUNT = mag_count
+        self.seed = seed
         self.raw_palette = self._get_palette(raw_block_stream, self_assigned_palette)
 
         change_matrix = self._get_change_matrix(raw_block_stream, self.raw_palette)
@@ -153,6 +156,8 @@ class BlockStreamManager:
         self, block_assignment, change_matrix, raw_palette, max_iterations=50000
     ):
         random.seed(42)
+        if self.seed is not None:
+            random.seed(self.seed)
         current_assignemt = block_assignment
         current_cost = self._get_assignment_cost(
             change_matrix, block_assignment, raw_palette

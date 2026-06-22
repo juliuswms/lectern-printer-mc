@@ -4,14 +4,11 @@ import os
 import subprocess
 import time
 
-import evdev
-from evdev import UInput
-from evdev import ecodes as e
-from pynput import keyboard
 from pynput.keyboard import Controller, Key
 
 
 class KeyManager:
+    MAX_PAGE_CHARS = 1023
     INPUT_DELAY = 0.001
     CHAR_MAPPING_FILEPATH = os.path.join(
         os.path.dirname(__file__), "..", "char-mapping.json"
@@ -68,26 +65,24 @@ class KeyManager:
         print_pause_delay,
         instructions,
         book=0,
-        max_page_chars=1023,
     ):
         self._paste_string(
             f"name={print_name}\nest={print_est}\ndelays={print_delays}\npdelay={print_pause_delay}\nbook={book}"
         )
 
         time.sleep(0.1)
-        num_pages = math.ceil(len(instructions) / max_page_chars)
-        if book > num_pages / 100:
+        num_pages = math.ceil(len(instructions) / self.MAX_PAGE_CHARS)
+        if book > num_pages / 99:
             raise Exception(
-                f"Book requested is out of range. Book: {book} was requested but {num_pages / 100} are needed."
+                f"Book requested is out of range. Book: {book} was requested but {num_pages / 99} are needed."
             )
-        # self._press_key(e.KEY_PAGEDOWN)
         subprocess.run(["ydotool", "key", "109:1", "109:0"])
         time.sleep(2)
-        start_page = (book + 1) * 100
+        start_page = (book + 1) * 99
         for start_page in range(num_pages):
             page_string = ""
-            start = start_page * max_page_chars
-            end = min(start + max_page_chars, len(instructions))
+            start = start_page * self.MAX_PAGE_CHARS
+            end = min(start + self.MAX_PAGE_CHARS, len(instructions))
             for idx in range(start, end):
                 page_string += self._int_to_char(instructions[idx])
             self._paste_string(page_string)
@@ -101,10 +96,3 @@ class KeyManager:
     def _paste_string(self, text):
         subprocess.run(["wl-copy"], input=text.encode("utf-8"))
         subprocess.run(["ydotool", "key", "29:1", "47:1", "47:0", "29:0"])  # Ctrl+V
-
-    def _press_key(self, key):
-        ui = UInput()
-        ui.write(e.EV_KEY, key, 1)
-        ui.write(e.EV_KEY, key, 0)
-        ui.syn()
-        ui.close()
