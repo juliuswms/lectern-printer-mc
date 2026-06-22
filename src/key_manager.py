@@ -78,7 +78,7 @@ class KeyManager:
         num_pages = math.ceil(len(instructions) / self.MAX_PAGE_CHARS)
         if book > num_pages / 99:
             raise Exception(
-                f"Book requested is out of range. Book: {book} was requested but {num_pages / 99} are needed."
+                f"Book requested is out of range. Book: {book} was requested but {math.ceil(num_pages / 99)} are needed."
             )
         subprocess.run(["ydotool", "key", "109:1", "109:0"])
         time.sleep(2)

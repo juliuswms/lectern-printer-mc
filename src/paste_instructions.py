@@ -38,6 +38,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-b",
         "--Book",
+        type=int,
         default=None,
         help="Adjust which book is printed if more then one is needed. ONLY USE WHEN ALSO SETING --Seed",
     )
@@ -73,10 +74,16 @@ if __name__ == "__main__":
     )
     print(f"stimated print time: {est_gt}gt's ({est_gt / 20 / 60}min)")
     print("Press any key to start 3 second countdown till instructions are pasted")
+    input()
     sleep(3)
     if args.Book:
         key_manager.type_intructions(
-            schematic.name, est_gt, args.Delays, args.Pause_delay, instructions
+            schematic.name,
+            est_gt,
+            args.Delays,
+            args.Pause_delay,
+            instructions,
+            book=args.Book,
         )
     else:
         num_pages = math.ceil(len(instructions) / key_manager.MAX_PAGE_CHARS)
@@ -90,7 +97,8 @@ if __name__ == "__main__":
                 instructions,
                 book=i,
             )
-            if i == total_num_of_books:
+            if i == total_num_of_books - 1:
                 break
             print("Press enter to print next book")
             input()
+            sleep(3)
