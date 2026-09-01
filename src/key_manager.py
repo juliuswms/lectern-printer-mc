@@ -59,4 +59,5 @@ class KeyManager:
 
     def _paste_string(self, text):
         subprocess.run(["wl-copy"], input=text.encode("utf-8"))
+        time.sleep(0.03)
         subprocess.run(["ydotool", "key", "29:1", "47:1", "47:0", "29:0"])  # Ctrl+V
