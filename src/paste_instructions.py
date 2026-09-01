@@ -48,24 +48,24 @@ if __name__ == "__main__":
         schematic = schematic_handler.SchematicHandler(args.Path)
     else:
         raise Exception("No Path to schematic. Use -p or --Path.")
-    key_manager = key_manager.KeyManager()
-    block_stream_manager = block_stream_manager.BlockStreamManager(
+    km = key_manager.KeyManager()
+    bsm = block_stream_manager.BlockStreamManager(
         schematic.blocklist, mag_count=int(args.Mag_Count), seed=args.Seed
     )
-    block_stream_manager.print_assignment()
-    block_palette = block_stream_manager.block_palette
-    instruction_manager = instruction_manager.InstructionManager()
-    instructions = instruction_manager.generate_instructions(
-        block_stream_manager.block_stream,
-        block_stream_manager.block_palette,
-        block_stream_manager.MAG_COUNT,
+    bsm.print_assignment()
+    block_palette = bsm.block_palette
+    im = instruction_manager.InstructionManager()
+    instructions = im.generate_instructions(
+        bsm.block_stream,
+        bsm.block_palette,
+        bsm.MAG_COUNT,
     )
     print(f"{len(instructions)} instructions")
     print(f"{len(schematic.blocklist)} blocks to print")
     print(f"{len(instructions) - len(schematic.blocklist)} mag changes")
-    schematic.create_schematic_for_block_assigment(block_stream_manager.block_palette)
+    schematic.create_schematic_for_block_assignment(bsm.block_palette)
     print(
-        f"Print is starting at mag index (0-based): {block_stream_manager.block_stream[0].mag_index}"
+        f"Print is starting at mag index (0-based): {bsm.block_stream[0].mag_index}"
     )
     block_count = len(schematic.blocklist)
     mag_changes = len(instructions) - len(schematic.blocklist)
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     input()
     sleep(3)
     if args.Book:
-        key_manager.type_intructions(
+        km.type_instructions(
             schematic.name,
             est_gt,
             args.Delays,
@@ -86,10 +86,10 @@ if __name__ == "__main__":
             book=args.Book,
         )
     else:
-        num_pages = math.ceil(len(instructions) / key_manager.MAX_PAGE_CHARS)
+        num_pages = math.ceil(len(instructions) / km.MAX_PAGE_CHARS)
         total_num_of_books = math.ceil(num_pages / 99)
         for i in range(total_num_of_books):
-            key_manager.type_intructions(
+            km.type_instructions(
                 schematic.name,
                 est_gt,
                 args.Delays,
