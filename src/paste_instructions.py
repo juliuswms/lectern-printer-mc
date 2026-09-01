@@ -20,7 +20,7 @@ if __name__ == "__main__":
         "--Seed",
         type=int,
         default=None,
-        help="Add a seed for to make generation deterministic. Usefull while testing",
+        help="Add a seed to make generation deterministic. Usefull while testing",
     )
     parser.add_argument(
         "-pd",
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     est_gt = (
         (block_count * 10) + (block_count * 2) + (mag_changes * 4) + (mag_changes * 20)
     )
-    print(f"stimated print time: {est_gt}gt's ({est_gt / 20 / 60}min)")
+    print(f"Estimated print time: {est_gt}gt's ({est_gt / 20 / 60}min) ({est_gt / 20 / 60 / 60}h)")
     print("Press any key to start 3 second countdown till instructions are pasted")
     input()
     sleep(3)

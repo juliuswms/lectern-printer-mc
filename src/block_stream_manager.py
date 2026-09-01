@@ -7,8 +7,8 @@ import block_mapping
 class BlockStreamManager:
     MAX_MAG_SIZE = 14  # 0 based index
 
-    # raw_block_stream is the blocks that will be placed on after eatch other
-    # self_assigned_palette determens if the block palette is already set or if it should minimize the mag
+    # raw_block_stream are the blocks that will be placed on after each other
+    # self_assigned_palette determines if the block palette is already set or if it should minimize the mag
     def __init__(
         self, raw_block_stream, seed, self_assigned_palette=False, mag_count=4
     ):
@@ -23,7 +23,7 @@ class BlockStreamManager:
         )
         self.block_stream = self._get_block_stream(raw_block_stream)
 
-    # TODO: add functunalety for non self_assined block streams
+    # TODO: add functionality for non self_assigned block streams
     def _get_palette(self, raw_block_stream, self_assigned):
         raw_palette = list(dict.fromkeys(raw_block_stream))
         if len(raw_palette) > (self.MAX_MAG_SIZE * self.MAG_COUNT):
@@ -70,12 +70,12 @@ class BlockStreamManager:
                 print(f"  Slot {m.lectern_index + 1:2d}: {m.block_name}")
         print()
 
-    def _get_change_matrix(self, raw_block_stream, pallet):
+    def _get_change_matrix(self, raw_block_stream, palette):
         last_block = raw_block_stream[0]
 
-        block_type_index_dict = {t: i for i, t in enumerate(pallet)}
+        block_type_index_dict = {t: i for i, t in enumerate(palette)}
 
-        n = len(pallet)
+        n = len(palette)
 
         change_matrix = [[0 for _ in range(n)] for _ in range(n)]
 
@@ -158,11 +158,11 @@ class BlockStreamManager:
         random.seed(42)
         if self.seed is not None:
             random.seed(self.seed)
-        current_assignemt = block_assignment
+        current_assignment = block_assignment
         current_cost = self._get_assignment_cost(
             change_matrix, block_assignment, raw_palette
         )
-        best_assignment = current_assignemt
+        best_assignment = current_assignment
         best_cost = current_cost
 
         T_start = current_cost * 0.2
@@ -176,11 +176,11 @@ class BlockStreamManager:
             candidat_cost = self._get_assignment_cost(
                 change_matrix, candidat, raw_palette
             )
-            delta = candidat_cost - current_cost
+            delta = candidate_cost - current_cost
 
             if delta <= 0 or random.random() < math.exp(-delta / T):
-                current_assignemt = candidat
-                current_cost = candidat_cost
+                current_assignemt = candidate
+                current_cost = candidate_cost
                 if current_cost < best_cost:
                     best_assignment = current_assignemt
                     best_cost = current_cost

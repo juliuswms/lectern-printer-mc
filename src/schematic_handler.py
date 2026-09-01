@@ -40,7 +40,7 @@ class SchematicHandler:
             )  # TODO: Check for air block
         return blocks
 
-    def create_schematic_for_block_assigment(  # TODO: generate respecting needed block amounts
+    def create_schematic_for_block_assignment(  # TODO: generate respecting needed block amounts
         self, block_assigment, output_path="./schematics/output"
     ):
         mags = {}
