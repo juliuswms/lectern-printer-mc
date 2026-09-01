@@ -19,49 +19,9 @@ class KeyManager:
         with open(self.CHAR_MAPPING_FILEPATH) as f:
             self._mapping = json.load(f)
 
-    def home(self):
-        pass
-        # DEPRECATED - Needs to be ported to ydotool (and windows)
-        # self.move(self.Key.page_up, 15)
-        # self.is_homed = True
-        # self.last_page = 0
+    # TODO: reimplement script-based printing
 
-    def goto_page(self, page_number):
-        # DEPRECATED - Needs to be ported to ydotool (and windows)
-        pass
-        # if not self.is_homed:
-        #     self.home()
-
-        # diff = page_number - self.last_page
-        # key = self.Key.page_down if diff > 0 else self.Key.page_up
-        # if self.logging:
-        #     print(
-        #         f"Moving to page {page_number} from {self.last_page}, diff: {diff}, key: {key}"
-        #     )
-        # if diff != 0:
-        #     self.move(key, abs(diff))
-        # else:
-        #     self.trigger()
-        # self.last_page = page_number
-
-    def trigger(self):
-        # DEPRECATED - Needs to be ported to ydotool (and windows)
-        pass
-        # self.keyboard.tap(self.Key.page_down)
-        # time.sleep(self.INPUT_DELAY)
-        # self.keyboard.tap(self.Key.page_up)
-
-    def move(self, key, count):
-        # DEPRECATED - Needs to be ported to ydotool (and windows)
-        pass
-        # for _ in range(count):
-        #      start_time = time.time() * 1000
-        #      self.keyboard.tap(key)
-        #      time.sleep(self.INPUT_DELAY)
-        #      if self.logging:
-        #          print(f"Pressing {key} took {time.time() * 1000 - start_time} ms")
-
-    def type_intructions(
+    def type_instructions(
         self,
         print_name,
         print_est,
