@@ -7,7 +7,8 @@ import time
 
 class KeyManager:
     MAX_PAGE_CHARS = 1023
-    INPUT_DELAY = 0.001
+    INPUT_DELAY = 0.2
+    PAST_INPUT_DELAY = 0.3
     CHAR_MAPPING_FILEPATH = os.path.join(
         os.path.dirname(__file__), "..", "char-mapping.json"
     )
@@ -40,8 +41,9 @@ class KeyManager:
             raise Exception(
                 f"Book requested is out of range. Book: {book} was requested but {math.ceil(num_pages / 99)} are needed."
             )
+
+        time.sleep(1)
         subprocess.run(["ydotool", "key", "109:1", "109:0"])
-        time.sleep(2)
         start_page = (book + 1) * 99
         for start_page in range(num_pages):
             page_string = ""
@@ -50,9 +52,9 @@ class KeyManager:
             for idx in range(start, end):
                 page_string += self._int_to_char(instructions[idx])
             self._paste_string(page_string)
-            time.sleep(0.09)
+            time.sleep(0.01)
             subprocess.run(["ydotool", "key", "109:1", "109:0"])
-            time.sleep(0.09)
+            time.sleep(0.01)
 
     def _int_to_char(self, num):
         return self._mapping[num]
