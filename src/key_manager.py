@@ -37,17 +37,19 @@ class KeyManager:
 
         time.sleep(0.1)
         num_pages = math.ceil(len(instructions) / self.MAX_PAGE_CHARS)
-        if book > num_pages / 99:
+        total_books = math.ceil(num_pages / 99)
+        if book < 0 or book >= total_books:
             raise Exception(
-                f"Book requested is out of range. Book: {book} was requested but {math.ceil(num_pages / 99)} are needed."
+                f"Book requested is out of range. Book: {book} was requested but {total_books} are needed."
             )
 
         time.sleep(1)
         subprocess.run(["ydotool", "key", "109:1", "109:0"])
-        start_page = (book + 1) * 99
-        for start_page in range(num_pages):
+        first_page = book * 99
+        last_page = min(first_page + 99, num_pages)
+        for page in range(first_page, last_page):
             page_string = ""
-            start = start_page * self.MAX_PAGE_CHARS
+            start = page * self.MAX_PAGE_CHARS
             end = min(start + self.MAX_PAGE_CHARS, len(instructions))
             for idx in range(start, end):
                 page_string += self._int_to_char(instructions[idx])
