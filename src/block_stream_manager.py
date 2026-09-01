@@ -5,7 +5,7 @@ import block_mapping
 
 
 class BlockStreamManager:
-    MAX_MAG_SIZE = 14  # 0 based index
+    MAX_MAG_SIZE = 13  # number of blocktypes per magazine
 
     # raw_block_stream are the blocks that will be placed on after each other
     # self_assigned_palette determines if the block palette is already set or if it should minimize the mag
@@ -103,7 +103,7 @@ class BlockStreamManager:
             )
             current_lectern_index += 1
 
-            if current_lectern_index == self.MAX_MAG_SIZE - 1:
+            if current_lectern_index == self.MAX_MAG_SIZE:
                 current_lectern_index = 0
                 current_mag_index += 1
 
