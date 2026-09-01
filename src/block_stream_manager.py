@@ -141,6 +141,8 @@ class BlockStreamManager:
         a_mag = new_assignment[a_key].mag_index
 
         candidates = [k for k in keys if new_assignment[k].mag_index != a_mag]
+        if not candidates:
+            return new_assignment
         b_key = random.choice(candidates)
 
         a_map = new_assignment[a_key]
@@ -172,9 +174,9 @@ class BlockStreamManager:
         iteration = 0
         while T_start > T_min and iteration < max_iterations:
             T = T_start * (alpha**iteration)
-            candidat = self._random_swap_in_block_assignment(current_assignemt)
-            candidat_cost = self._get_assignment_cost(
-                change_matrix, candidat, raw_palette
+            candidate = self._random_swap_in_block_assignment(current_assignment)
+            candidate_cost = self._get_assignment_cost(
+                change_matrix, candidate, raw_palette
             )
             delta = candidate_cost - current_cost
 
